@@ -8,8 +8,8 @@
 // @match        *://www.doblox.xyz/*
 // @icon         https://www.doblox.xyz/img/logo_R.svg
 // @grant        none
-// @updateURL    https://raw.githubusercontent.com/v9h/stratus-item-notifier/main/stratusitemnotifier.js
-// @downloadURL  https://raw.githubusercontent.com/v9h/stratus-item-notifier/main/stratusitemnotifier.js
+// @updateURL    https://raw.githubusercontent.com/eternal-45/doblox-notif/main/dobloxnotifier.js
+// @downloadURL  https://raw.githubusercontent.com/eternal-45/doblox-notif/main/dobloxnotifier.js
 // ==/UserScript==
 
 (function() {
