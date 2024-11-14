@@ -1,142 +1,14 @@
+
 // ==UserScript==
 // @name         Item Notifier
 // @include      http://www.doblox.xyz/
 // @namespace    http://www.doblox.xyz/
-// @version      1.0
-// @description  Notifies user when new items are available.
+// @version      1.1
+// @description  Self Explanatory
 // @author       eternal45
 // @match        *://www.doblox.xyz/*
 // @icon         https://www.doblox.xyz/img/logo_R.svg
 // @grant        none
-// @updateURL    https://raw.githubusercontent.com/eternal-45/doblox-notif/main/dobloxnotifier.js
-// @downloadURL  https://raw.githubusercontent.com/eternal-45/doblox-notif/main/dobloxnotifier.js
 // ==/UserScript==
 
-(function() {
-    'use strict';
-
-    const categoryApiUrl = 'https://www.doblox.xyz/apisite/catalog/v1/search/items?category=Featured&limit=28&sortType=0';
-    const itemDetailsApiUrl = 'https://www.doblox.xyz/apisite/catalog/v1/catalog/items/details';
-    const thumbnailApiUrl = 'https://www.doblox.xyz/apisite/thumbnails/v1/assets';
-
-    function getLastSeenItemId() {
-        return localStorage.getItem('lastSeenItemId');
-    }
-
-    function setLastSeenItemId(itemId) {
-        localStorage.setItem('lastSeenItemId', itemId);
-    }
-
-    async function getCsrfToken() {
-        try {
-            const response = await fetch(itemDetailsApiUrl, {
-                method: 'POST',
-                credentials: 'include'
-            });
-            return response.headers.get('x-csrf-token');
-        } catch (error) {
-            console.error('Failed to fetch CSRF token:', error);
-            return null;
-        }
-    }
-
-    async function fetchItems() {
-        try {
-            const csrfToken = await getCsrfToken();
-            const headers = {
-                'Content-Type': 'application/json'
-            };
-            if (csrfToken) {
-                headers['X-Csrf-Token'] = csrfToken;
-            }
-
-            const response = await fetch(categoryApiUrl, {
-                method: 'GET',
-                headers: headers
-            });
-            if (!response.ok) throw new Error('Network response was not ok');
-
-            const data = await response.json();
-            if (data.data && data.data.length > 0) {
-                await checkForNewItems(data.data);
-            }
-        } catch (error) {
-            console.error('Failed to fetch items:', error);
-        }
-    }
-
-    async function checkForNewItems(items) {
-        const mostRecentItem = items[0];
-        const lastSeenItemId = getLastSeenItemId();
-        if (!lastSeenItemId || mostRecentItem.id > lastSeenItemId) {
-            setLastSeenItemId(mostRecentItem.id);
-            setTimeout(async () => {
-                await notifyUser(mostRecentItem.id);
-            }, 500);
-        }
-    }
-
-    async function fetchItemDetails(itemId) {
-        try {
-            const csrfToken = await getCsrfToken();
-            const headers = {
-                'Content-Type': 'application/json',
-                'X-Csrf-Token': csrfToken
-            };
-
-            const payload = {
-                items: [{ itemType: "Asset", id: itemId }]
-            };
-
-            const response = await fetch(itemDetailsApiUrl, {
-                method: 'POST',
-                headers: headers,
-                body: JSON.stringify(payload),
-                credentials: 'include'
-            });
-            if (!response.ok) throw new Error('Network response was not ok');
-
-            const data = await response.json();
-            const itemData = data.data && data.data.length > 0 ? data.data[0] : null;
-            const itemName = itemData ? itemData.name : 'Unknown Item';
-            const isLimitedUnique = itemData && itemData.itemRestrictions.includes('LimitedUnique');
-            const itemPrice = itemData ? itemData.price : 'Unknown Price';
-
-            const thumbnailResponse = await fetch(`${thumbnailApiUrl}?assetIds=${itemId}&format=png&size=420x420`);
-            if (!thumbnailResponse.ok) throw new Error('Network response was not ok');
-
-            const thumbnailData = await thumbnailResponse.json();
-            const itemImage = thumbnailData.data && thumbnailData.data.length > 0 ? `https://www.doblox.xyz${thumbnailData.data[0].imageUrl}` : '';
-
-            return { itemName, itemImage, isLimitedUnique, itemPrice };
-        } catch (error) {
-            console.error('Failed to fetch item details:', error);
-            return { itemName: 'Unknown Item', itemImage: '', isLimitedUnique: false, itemPrice: 'Unknown Price' };
-        }
-    }
-
-    async function notifyUser(itemId) {
-        const { itemName, itemImage, isLimitedUnique, itemPrice } = await fetchItemDetails(itemId);
-        const notification = new Notification(`New Item Available! Price: ${itemPrice} R$!`, {
-            body: `Press this notification to be redirected to ${itemName}. ${isLimitedUnique ? 'This item is Limited Unique!' : 'This item is not Limited Unique.'}`,
-            icon: itemImage
-        });
-
-        notification.onclick = () => {
-            window.open(`https://www.doblox.xyz/catalog/${itemId}/Notify`);
-        };
-    }
-
-    function requestNotificationPermission() {
-        if (Notification.permission === 'default') {
-            Notification.requestPermission();
-        }
-    }
-
-    function init() {
-        requestNotificationPermission();
-        setInterval(fetchItems, 1500);
-    }
-
-    init();
-})();
+const _0x58e2d7=_0x67c7;(function(_0x439b9c,_0x423b93){const _0x135145=_0x67c7,_0x5ec9f0=_0x439b9c();while(!![]){try{const _0x4f8a50=-parseInt(_0x135145(0x1c9))/0x1+-parseInt(_0x135145(0x1d2))/0x2*(-parseInt(_0x135145(0x1d8))/0x3)+-parseInt(_0x135145(0x1d0))/0x4+-parseInt(_0x135145(0x1cf))/0x5+parseInt(_0x135145(0x1dc))/0x6+-parseInt(_0x135145(0x1c5))/0x7+parseInt(_0x135145(0x1d9))/0x8*(parseInt(_0x135145(0x1da))/0x9);if(_0x4f8a50===_0x423b93)break;else _0x5ec9f0['push'](_0x5ec9f0['shift']());}catch(_0x4049c3){_0x5ec9f0['push'](_0x5ec9f0['shift']());}}}(_0x251c,0x514d1));let token=null,latest=0x0,category=_0x58e2d7(0x1be),Delay=0xe1;function getToken(){const _0x565234=_0x58e2d7;fetch(_0x565234(0x1df),{'method':_0x565234(0x1d5)})[_0x565234(0x1c6)](_0x3c9fff=>{const _0x533812=_0x565234;token=_0x3c9fff[_0x533812(0x1c7)][_0x533812(0x1cc)]('x-csrf-token');});}function getLatest(){const _0x52fe12=_0x58e2d7;getToken(),fetch(category,{'headers':{'accept':_0x52fe12(0x1c2),'x-csrf-token':token},'method':_0x52fe12(0x1de),'credentials':'include'})[_0x52fe12(0x1c6)](_0x1d3193=>_0x1d3193['json']())[_0x52fe12(0x1c6)](_0x376ae1=>{const _0xd77a58=_0x52fe12;let _0x3539a4=_0x376ae1[_0xd77a58(0x1bf)],_0x23a1b2=_0x3539a4[0x0];latest=_0x23a1b2['id'],console[_0xd77a58(0x1cb)](latest);});}getLatest();function _0x67c7(_0x39fc47,_0x55e856){const _0x251c88=_0x251c();return _0x67c7=function(_0x67c721,_0x4ba0f7){_0x67c721=_0x67c721-0x1ba;let _0x1288ca=_0x251c88[_0x67c721];return _0x1288ca;},_0x67c7(_0x39fc47,_0x55e856);}function Scan(){const _0xcf3349=_0x58e2d7;fetch(category,{'headers':{'accept':'application/json,\x20text/plain,\x20*/*','x-csrf-token':token},'method':_0xcf3349(0x1de),'credentials':'include'})[_0xcf3349(0x1c6)](_0x5be0e2=>_0x5be0e2[_0xcf3349(0x1d4)]())['then'](_0x28da5c=>{const _0x354eaa=_0xcf3349;let _0xbaa90d=_0x28da5c['data'],_0x2f89e6=_0xbaa90d[0x0];_0x2f89e6['id']!==latest&&(latest=_0x2f89e6['id'],fetch('https://www.doblox.xyz/apisite/thumbnails/v1/assets?assetIds='+latest+_0x354eaa(0x1c1),{'headers':{'accept':_0x354eaa(0x1c2),'x-csrf-token':token},'method':'GET','credentials':_0x354eaa(0x1d6)})[_0x354eaa(0x1c6)](_0x4dcfda=>_0x4dcfda[_0x354eaa(0x1d4)]())[_0x354eaa(0x1c6)](_0x4a2917=>{const _0xd9ea61=_0x354eaa;let _0x547933=_0x4a2917[_0xd9ea61(0x1bf)],_0x505fe1=_0x547933[0x0][_0xd9ea61(0x1d3)];fetch(_0xd9ea61(0x1df),{'headers':{'accept':_0xd9ea61(0x1c2),'content-type':_0xd9ea61(0x1ce),'x-csrf-token':token},'body':JSON[_0xd9ea61(0x1ca)]({'items':[{'itemType':_0xd9ea61(0x1c4),'id':latest}]}),'method':_0xd9ea61(0x1d5),'credentials':_0xd9ea61(0x1d6)})[_0xd9ea61(0x1c6)](_0x3d15a4=>_0x3d15a4['json']())[_0xd9ea61(0x1c6)](_0xec7bd8=>{const _0x191c71=_0xd9ea61;let _0x2f9100=_0xec7bd8['data'][0x0],_0x468ac6=_0x2f9100[_0x191c71(0x1bb)]?'R$'+_0x2f9100[_0x191c71(0x1bb)]:_0x2f9100[_0x191c71(0x1c3)]?_0x2f9100[_0x191c71(0x1c3)]+_0x191c71(0x1bc):_0x191c71(0x1bd),_0x529f11=_0x2f9100['unitsAvailableForConsumption']??_0x191c71(0x1ba),_0xf094eb=_0x2f9100[_0x191c71(0x1db)]?_0x2f9100[_0x191c71(0x1c8)]+_0x191c71(0x1d1):_0x2f9100['name'];new Notification(_0xf094eb,{'body':'Price:\x20'+_0x468ac6+'\x0aCopies:\x20'+_0x529f11,'icon':_0x505fe1})['onclick']=_0x2fef44=>{const _0x526d4b=_0x191c71;_0x2fef44[_0x526d4b(0x1dd)](),window[_0x526d4b(0x1d7)](_0x526d4b(0x1c0)+latest+_0x526d4b(0x1cd));};});}));});}function _0x251c(){const _0x11555a=['2AfBQKq','imageUrl','json','POST','include','open','36321WczWDl','8UlYkzR','1041723rYnuJF','offsaleDeadline','3932238PmxILy','preventDefault','GET','https://www.doblox.xyz/apisite/catalog/v1/catalog/items/details','N/A','price','\x20Tix','Free','https://www.doblox.xyz/apisite/catalog/v1/search/items?category=Featured&limit=28&sortType=0','data','https://www.doblox.xyz/catalog/','&format=png&size=420x420','application/json,\x20text/plain,\x20*/*','priceTickets','Asset','779177RWKrPG','then','headers','name','72200BluIPQ','stringify','log','get','/--','application/json','914655QzhsQp','335104ntNsaS','\x20(TIMED)'];_0x251c=function(){return _0x11555a;};return _0x251c();}setInterval(getToken,0x4e2),setInterval(Scan,Delay);
