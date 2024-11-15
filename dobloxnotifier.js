@@ -8,8 +8,6 @@
 // @match        *://www.doblox.xyz/*
 // @icon         https://www.doblox.xyz/img/logo_R.svg
 // @grant        none
-// @updateURL    https://raw.githubusercontent.com/eternal-45/doblox-notif/main/dobloxnotifier.js
-// @downloadURL  https://raw.githubusercontent.com/eternal-45/doblox-notif/main/dobloxnotifier.js
 // ==/UserScript==
 
 // src by fullstops @ discord //
