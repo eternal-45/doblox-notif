@@ -2,7 +2,7 @@
 // @name         Item Notifier
 // @include      http://www.doblox.xyz/
 // @namespace    http://www.doblox.xyz/
-// @version      1.3
+// @version      1.5
 // @description  Notifies user when new items are available.
 // @author       eternal45
 // @match        *://www.doblox.xyz/*
